@@ -52,25 +52,36 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
     graphics_draw_line(ctx, polar(center, radius, angle), polar(center, radius - len, angle));
   }
 
+  // Even-hour numerals inside the ticks, 12 at the top and 00 at the bottom.
+  GFont small = fonts_get_system_font(FONT_KEY_GOTHIC_14);
+  graphics_context_set_text_color(ctx, GColorLightGray);
+  for (int h = 0; h < 24; h += 2) {
+    GPoint pos = polar(center, radius - 27, minutes_to_angle(h * 60));
+    char num_str[3];
+    snprintf(num_str, sizeof(num_str), "%02d", h);
+    graphics_draw_text(ctx, num_str, small, GRect(pos.x - 10, pos.y - 9, 20, 16),
+                       GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
+  }
+
   GFont font = fonts_get_system_font(FONT_KEY_GOTHIC_18);
   graphics_context_set_text_color(ctx, GColorWhite);
 
   // Top label: connection loss and quiet time, otherwise "pebble".
   const char *label = !connection_service_peek_pebble_app_connection() ? "no link"
                     : quiet_time_is_active() ? "quiet" : "pebble";
-  draw_centered(ctx, label, font, GPoint(center.x, center.y - 62), 80);
+  draw_centered(ctx, label, font, GPoint(center.x, center.y - 44), 80);
 
   // Battery on the left.
   char batt[6];
   snprintf(batt, sizeof(batt), "%d%%", charge_state.charge_percent);
-  draw_centered(ctx, batt, font, GPoint(center.x - 58, center.y), 50);
+  draw_centered(ctx, batt, font, GPoint(center.x - 44, center.y), 50);
 
   // Weekday and date on the right.
   char day[8], date[8];
   strftime(day, sizeof(day), "%a", local);
   strftime(date, sizeof(date), "%d.%m.", local);
-  draw_centered(ctx, day,  font, GPoint(center.x + 56, center.y - 10), 60);
-  draw_centered(ctx, date, font, GPoint(center.x + 56, center.y + 10), 60);
+  draw_centered(ctx, day,  font, GPoint(center.x + 42, center.y - 10), 60);
+  draw_centered(ctx, date, font, GPoint(center.x + 42, center.y + 10), 60);
 
   // The one long white hand, rounded ends, one turn per day.
   int32_t angle = minutes_to_angle(local->tm_hour * 60 + local->tm_min);

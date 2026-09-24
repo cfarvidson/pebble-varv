@@ -4,7 +4,7 @@
 look of [Nifty](https://apps.repebble.com/nifty_564a21274f9b298767000067) by
 Fnord Prefect. One long white hand that turns once a day, 12:00 at the top and
 00:00 at the bottom. Quarter-hour ticks with white hour marks, bigger at 0, 6,
-12 and 18.
+12 and 18, and small even-hour numerals inside them.
 
 ![](screenshots/emery.png)
 
