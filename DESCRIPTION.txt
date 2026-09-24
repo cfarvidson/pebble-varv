@@ -1,3 +1,3 @@
 24-hour watchface with a single long hand for Pebble Time 2. One rotation per day: noon at the top, midnight at the bottom. Black dial with quarter-hour ticks and small even-hour numerals, battery on the left, weekday and date on the right, and a top label that shows when the phone connection is lost or quiet time is on.
 
-Inspired by the look of Nifty by Fnord Prefect, rebuilt from scratch as a 24-hour face.
+Inspired by Nifty by Fnord Prefect (https://apps.repebble.com/nifty_564a21274f9b298767000067), rebuilt from scratch as a 24-hour face.
