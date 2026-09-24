@@ -89,7 +89,7 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   graphics_context_set_stroke_width(ctx, 9);
   graphics_draw_line(ctx, center, polar(center, radius - 26, angle));
 
-  graphics_context_set_fill_color(ctx, GColorMelon);
+  graphics_context_set_fill_color(ctx, GColorChromeYellow);
   graphics_fill_circle(ctx, center, 7);
 }
 
