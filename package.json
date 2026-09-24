@@ -9,11 +9,16 @@
     "displayName": "Varv",
     "uuid": "e4a7c1f9-2d63-4b8e-a5f0-7c9d3e6b1a28",
     "sdkVersion": "3",
-    "enableMultiJS": false,
+    "enableMultiJS": true,
     "targetPlatforms": [
       "emery"
     ],
-    "capabilities": [],
+    "capabilities": [
+      "configurable"
+    ],
+    "messageKeys": [
+      "HAND_COLOR"
+    ],
     "watchapp": {
       "watchface": true
     },

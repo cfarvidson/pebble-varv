@@ -6,7 +6,9 @@ Fnord Prefect. One long white hand that turns once a day, 12:00 at the top and
 00:00 at the bottom. Quarter-hour ticks with white hour marks, bigger at 0, 6,
 12 and 18, and small even-hour numerals inside them.
 
-![](screenshots/emery.png)
+| White hand (default) | Red hand |
+|---|---|
+| ![](screenshots/emery.png) | ![](screenshots/emery-red.png) |
 
 Around the hand:
 
@@ -15,7 +17,14 @@ Around the hand:
 - "pebble" at the top, which changes to "no link" when the phone connection
   is lost (with a double vibration) and "quiet" during quiet time.
 
-No settings. Nifty's source is not public, so this is a re-creation from its
+## Settings
+
+Phone app, gear icon on the watchface:
+
+- Hand colour: white (default), light grey, chrome yellow, orange, red,
+  magenta, cyan or green.
+
+Nifty's source is not public, so this is a re-creation from its
 screenshot, not a code fork.
 
 ## Build and install

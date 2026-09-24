@@ -5,9 +5,12 @@
 // once a day, 12:00 at the top and 00:00 at the bottom. Battery on the left,
 // weekday and date on the right, connection and quiet time shown at the top.
 
+#define PKEY_HAND_COLOR 1
+
 static Window *s_window;
 static Layer  *s_canvas_layer;
 static BatteryChargeState charge_state;
+static GColor  s_hand_color;   // palette byte from the settings page
 
 // Noon = top = 0; midnight = bottom.
 static int32_t minutes_to_angle(int local_min) {
@@ -85,12 +88,21 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
 
   // The one long white hand, rounded ends, one turn per day.
   int32_t angle = minutes_to_angle(local->tm_hour * 60 + local->tm_min);
-  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_context_set_stroke_color(ctx, s_hand_color);
   graphics_context_set_stroke_width(ctx, 9);
   graphics_draw_line(ctx, center, polar(center, radius - 26, angle));
 
   graphics_context_set_fill_color(ctx, GColorChromeYellow);
   graphics_fill_circle(ctx, center, 7);
+}
+
+static void inbox_received(DictionaryIterator *iter, void *context) {
+  Tuple *t = dict_find(iter, MESSAGE_KEY_HAND_COLOR);
+  if (t) {
+    s_hand_color = (GColor){ .argb = (uint8_t)(0xC0 | (t->value->int32 & 0x3F)) };
+    persist_write_int(PKEY_HAND_COLOR, s_hand_color.argb);
+    layer_mark_dirty(s_canvas_layer);
+  }
 }
 
 static void battery_handler(BatteryChargeState state) {
@@ -120,6 +132,10 @@ static void prv_window_unload(Window *window) {
 
 static void prv_init(void) {
   charge_state = battery_state_service_peek();
+  s_hand_color = GColorWhite;
+  if (persist_exists(PKEY_HAND_COLOR)) {
+    s_hand_color = (GColor){ .argb = (uint8_t)persist_read_int(PKEY_HAND_COLOR) };
+  }
 
   s_window = window_create();
   window_set_window_handlers(s_window, (WindowHandlers) {
@@ -133,6 +149,8 @@ static void prv_init(void) {
   connection_service_subscribe((ConnectionHandlers) {
     .pebble_app_connection_handler = connection_handler,
   });
+  app_message_register_inbox_received(inbox_received);
+  app_message_open(64, 32);
 }
 
 static void prv_deinit(void) {
